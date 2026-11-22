@@ -1,5 +1,8 @@
 # GUNBOND · 试玩版发布页
 
+**试玩页（推荐）**：https://wangdingwen163.github.io/gunbond-trial/
+
+
 2D 俯视角射击 + 枪械融合 Roguelite。逐层推进，捡枪、融合、越滚越强。
 
 > 本仓库只存放**可执行试玩包**，不含源码。源码在主仓库，不公开。

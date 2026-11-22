@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GUNBOND · 俯视角射击 + 枪械融合 Roguelite · 试玩版</title>
+<meta name="description" content="GUNBOND 是一款俯视角射击 + 枪械融合 Roguelite。5 层 15 波，捡枪、融合、越滚越强。Windows 免安装试玩版，39 MB 直接下载。">
+<meta property="og:title" content="GUNBOND · 试玩版 v0.2gh">
+<meta property="og:description" content="俯视角射击 + 枪械融合 Roguelite · 5 层 15 波 · Windows 免安装试玩">
+<meta property="og:image" content="assets/hero.jpg">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --bg:#0d0a12; --panel:#171222; --panel2:#1f1830; --line:#2e2440;
+    --ink:#f2ecff; --mute:#a297b8; --gold:#f5c451; --gold-d:#c99a20;
+    --accent:#8b6cff; --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink);
+    font:16px/1.75 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%;height:auto}
+  .wrap{width:100%;max-width:1080px;margin:0 auto;padding:0 20px}
+
+  /* ---------- 顶栏 ---------- */
+  header{
+    position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);
+    background:rgba(13,10,18,.82);border-bottom:1px solid var(--line);
+  }
+  .bar{display:flex;align-items:center;gap:18px;height:60px}
+  .brand{font-weight:800;letter-spacing:.14em;font-size:15px;color:var(--gold)}
+  .bar nav{margin-left:auto;display:flex;gap:20px;font-size:14px;color:var(--mute)}
+  .bar nav a:hover{color:var(--ink)}
+  .bar .btn-sm{
+    background:var(--gold);color:#211603;font-weight:700;padding:8px 16px;
+    border-radius:99px;font-size:13px;white-space:nowrap;
+  }
+  .bar .btn-sm:hover{background:#ffd873}
+  @media(max-width:640px){.bar nav{display:none}}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative;padding:56px 0 44px;overflow:hidden}
+  .hero::before{
+    content:"";position:absolute;inset:-30% -10% auto -10%;height:120%;
+    background:radial-gradient(60% 50% at 50% 0%,rgba(139,108,255,.30),transparent 70%);
+    pointer-events:none;
+  }
+  .hero .inner{position:relative;display:grid;grid-template-columns:300px 1fr;gap:44px;align-items:center}
+  .cover{
+    border-radius:var(--radius);overflow:hidden;border:1px solid var(--line);
+    box-shadow:0 24px 60px rgba(0,0,0,.6);
+  }
+  .tag{
+    display:inline-flex;align-items:center;gap:8px;font-size:12.5px;letter-spacing:.06em;
+    color:var(--gold);border:1px solid rgba(245,196,81,.35);background:rgba(245,196,81,.08);
+    padding:5px 13px;border-radius:99px;margin-bottom:18px;
+  }
+  .tag i{width:6px;height:6px;border-radius:50%;background:var(--gold);display:block}
+  h1{font-size:clamp(30px,5.2vw,50px);line-height:1.12;letter-spacing:-.01em;font-weight:800}
+  .sub{margin-top:14px;font-size:clamp(15px,2.1vw,18px);color:var(--mute);max-width:560px}
+  .sub b{color:var(--ink);font-weight:600}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;padding:14px 26px;border-radius:99px;
+    font-weight:700;font-size:15px;transition:.18s;border:1px solid transparent;
+  }
+  .btn-main{background:linear-gradient(180deg,#ffd873,var(--gold));color:#241802;box-shadow:0 10px 24px rgba(245,196,81,.24)}
+  .btn-main:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(245,196,81,.34)}
+  .btn-ghost{border-color:var(--line);color:var(--ink);background:var(--panel)}
+  .btn-ghost:hover{border-color:var(--accent);background:var(--panel2)}
+  .meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:26px;font-size:13.5px;color:var(--mute)}
+  .meta b{color:var(--ink);font-weight:600}
+  @media(max-width:820px){
+    .hero .inner{grid-template-columns:1fr;gap:28px}
+    .cover{max-width:260px;margin:0 auto}
+  }
+
+  /* ---------- 通用 section ---------- */
+  section{padding:64px 0;border-top:1px solid var(--line)}
+  h2{font-size:clamp(22px,3.4vw,30px);font-weight:800;letter-spacing:-.01em}
+  h2 small{display:block;font-size:13px;letter-spacing:.16em;color:var(--gold);font-weight:700;margin-bottom:10px}
+  .lead{color:var(--mute);margin-top:12px;max-width:660px}
+
+  /* ---------- 截图画廊 ---------- */
+  .shots{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:34px}
+  .shots figure{
+    position:relative;border-radius:12px;overflow:hidden;border:1px solid var(--line);
+    cursor:zoom-in;background:var(--panel);
+  }
+  .shots img{width:100%;aspect-ratio:16/9;object-fit:cover;transition:.35s}
+  .shots figure:hover img{transform:scale(1.045);opacity:.88}
+  .shots figcaption{
+    position:absolute;left:0;right:0;bottom:0;padding:26px 12px 9px;font-size:12.5px;color:#e8e0f5;
+    background:linear-gradient(transparent,rgba(8,6,12,.9));
+  }
+  @media(max-width:760px){.shots{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:480px){.shots{grid-template-columns:1fr}}
+
+  /* ---------- 特性 ---------- */
+  .grid4{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:34px}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:26px 24px;transition:.2s;
+  }
+  .card:hover{border-color:rgba(139,108,255,.55);background:var(--panel2)}
+  .card h3{font-size:16.5px;font-weight:700;display:flex;align-items:center;gap:10px}
+  .card h3 span{
+    width:26px;height:26px;border-radius:8px;display:grid;place-items:center;font-size:13px;
+    background:rgba(245,196,81,.14);color:var(--gold);font-weight:800;flex:none;
+  }
+  .card p{margin-top:10px;font-size:14.5px;color:var(--mute);line-height:1.72}
+  .card p b{color:var(--ink);font-weight:600}
+  @media(max-width:680px){.grid4{grid-template-columns:1fr}}
+
+  /* ---------- 表格 ---------- */
+  .tbl{width:100%;border-collapse:collapse;margin-top:26px;font-size:14.5px}
+  .tbl th,.tbl td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line)}
+  .tbl th{color:var(--mute);font-weight:600;width:190px;background:rgba(255,255,255,.018)}
+  .tbl td b{color:var(--gold);font-weight:700}
+
+  /* ---------- 下载区 ---------- */
+  .dl{
+    margin-top:34px;background:linear-gradient(160deg,rgba(139,108,255,.16),rgba(245,196,81,.09));
+    border:1px solid var(--line);border-radius:18px;padding:34px;
+  }
+  .dl h3{font-size:20px;font-weight:800}
+  .dl p{color:var(--mute);margin-top:10px;font-size:14.5px}
+  .dl .cta{margin-top:22px}
+  .hash{
+    margin-top:22px;background:#0a0810;border:1px solid var(--line);border-radius:10px;
+    padding:14px 16px;font:12.5px/1.9 ui-monospace,SFMono-Regular,Consolas,monospace;
+    color:#a89ec2;overflow-x:auto;
+  }
+  .hash b{color:var(--gold)}
+
+  /* ---------- 步骤 ---------- */
+  ol.steps{margin-top:26px;padding-left:0;list-style:none;counter-reset:s}
+  ol.steps li{
+    counter-increment:s;position:relative;padding:0 0 22px 46px;color:var(--mute);font-size:14.8px;
+  }
+  ol.steps li::before{
+    content:counter(s);position:absolute;left:0;top:1px;width:28px;height:28px;border-radius:50%;
+    background:rgba(245,196,81,.14);color:var(--gold);font-weight:800;font-size:13px;
+    display:grid;place-items:center;
+  }
+  ol.steps li:last-child{padding-bottom:0}
+  ol.steps li b{color:var(--ink)}
+  code{
+    background:#0a0810;border:1px solid var(--line);border-radius:6px;padding:1px 6px;
+    font:13px ui-monospace,SFMono-Regular,Consolas,monospace;color:#d9cff0;
+  }
+
+  /* ---------- 页脚 ---------- */
+  footer{border-top:1px solid var(--line);padding:40px 0 60px;color:var(--mute);font-size:13.5px}
+  .flinks{display:flex;flex-wrap:wrap;gap:10px 24px;margin-bottom:18px}
+  .flinks a{color:var(--mute)}
+  .flinks a:hover{color:var(--gold)}
+  .disclaimer{margin-top:16px;font-size:12.5px;line-height:1.8;color:#7d7292;max-width:760px}
+
+  /* ---------- Lightbox ---------- */
+  dialog#lb{
+    border:none;padding:0;background:transparent;max-width:96vw;max-height:96vh;
+  }
+  dialog#lb::backdrop{background:rgba(5,4,8,.92);backdrop-filter:blur(6px)}
+  dialog#lb img{max-width:96vw;max-height:92vh;border-radius:10px;border:1px solid var(--line)}
+  dialog#lb .x{
+    position:fixed;top:16px;right:20px;font-size:30px;line-height:1;color:#fff;
+    background:rgba(0,0,0,.5);border:none;width:44px;height:44px;border-radius:50%;cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <span class="brand">GUNBOND</span>
+    <nav>
+      <a href="#shots">截图</a>
+      <a href="#features">特色</a>
+      <a href="#howto">怎么玩</a>
+      <a href="#download">下载</a>
+    </nav>
+    <a class="btn-sm" href="#download">下载试玩</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap inner">
+    <div class="cover"><img src="assets/cover.jpg" alt="GUNBOND 封面" width="600" height="900"></div>
+    <div>
+      <span class="tag"><i></i>试玩版 v0.2gh · Windows 免安装</span>
+      <h1>捡枪、融合、<br>越滚越强。</h1>
+      <p class="sub">
+        <b>GUNBOND</b> 是一款俯视角射击 + 枪械融合 Roguelite。
+        每层 15 波，边打边捡，两把枪合成一把新的——
+        <b>5 层</b>打完，你会得到一套只属于这一局的武器组合。
+      </p>
+      <div class="cta">
+        <a class="btn btn-main" href="#download">立即下载 · 39 MB</a>
+        <a class="btn btn-ghost" href="https://github.com/wangdingwen163/gunbond-trial/releases/tag/v0.2gh" target="_blank" rel="noopener">更新说明</a>
+      </div>
+      <div class="meta">
+        <span>引擎 <b>Unity 2022.3</b></span>
+        <span>平台 <b>Windows 10/11 64 位</b></span>
+        <span>时长 <b>单局 10~20 分钟</b></span>
+        <span>手柄 <b>支持</b></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="shots">
+  <div class="wrap">
+    <h2><small>SCREENSHOTS</small>实机画面</h2>
+    <p class="lead">全部为游戏内实机截图，未做后期合成。点击可放大。</p>
+    <div class="shots">
+      <figure data-full="assets/s1.jpg"><img src="assets/s1.jpg" alt="实机截图 1" loading="lazy"><figcaption>第 1 层 · 初始房间</figcaption></figure>
+      <figure data-full="assets/s2.jpg"><img src="assets/s2.jpg" alt="实机截图 2" loading="lazy"><figcaption>敌人波次推进</figcaption></figure>
+      <figure data-full="assets/s3.jpg"><img src="assets/s3.jpg" alt="实机截图 3" loading="lazy"><figcaption>第 4 层 · 交火</figcaption></figure>
+      <figure data-full="assets/s4.jpg"><img src="assets/s4.jpg" alt="实机截图 4" loading="lazy"><figcaption>第 5 层 · 守卫长</figcaption></figure>
+      <figure data-full="assets/s5.jpg"><img src="assets/s5.jpg" alt="实机截图 5" loading="lazy"><figcaption>战利品与残响</figcaption></figure>
+      <figure data-full="assets/s6.jpg"><img src="assets/s6.jpg" alt="实机截图 6" loading="lazy"><figcaption>融合后的枪械</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2><small>FEATURES</small>这游戏在玩什么</h2>
+    <div class="grid4">
+      <div class="card">
+        <h3><span>1</span>枪械融合</h3>
+        <p>不是简单的数值叠加：两把枪融合后<b>改变射击方式</b>——散射、连发、穿透、追踪各有分支，融合图鉴共 <b>30 条</b>。</p>
+      </div>
+      <div class="card">
+        <h3><span>2</span>波次推进</h3>
+        <p>每层 <b>15 波</b>，共 <b>5 层</b>。每层末尾有守卫长，打完进入下一层；超时会强制结算，不给你无限风筝。</p>
+      </div>
+      <div class="card">
+        <h3><span>3</span>构筑成长</h3>
+        <p>升级三选一 + <b>残响</b>货币，让同一把枪在不同局里走向完全不同的强度曲线。</p>
+      </div>
+      <div class="card">
+        <h3><span>4</span>图鉴与解锁</h3>
+        <p>敌人、材料、战绩三页图鉴，加上融合图鉴 <b>30/30</b>、军械库 <b>7 把</b>。进度全部持久化，越玩解锁越多。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="howto">
+  <div class="wrap">
+    <h2><small>HOW TO PLAY</small>三步开打</h2>
+    <ol class="steps">
+      <li><b>解压</b>：把 zip 解到任意目录。路径建议纯英文，例如 <code>D:\Games\GUNBOND</code>。</li>
+      <li><b>运行</b>：双击 <code>GUNBOND.exe</code>。免安装，不写注册表，删目录即卸载。</li>
+      <li><b>操作</b>：<code>WASD</code> 移动，鼠标瞄准射击，<code>Shift</code> 冲刺，<code>E</code> 拾取/交互，<code>Esc</code> 暂停。手柄插入即用，键位可在设置里改。</li>
+    </ol>
+
+    <h2 style="margin-top:56px"><small>REQUIREMENTS</small>运行环境</h2>
+    <table class="tbl">
+      <tr><th>操作系统</th><td>Windows 10 / 11 · <b>64 位</b></td></tr>
+      <tr><th>显卡</th><td>支持 DirectX 11 的独立或集成显卡</td></tr>
+      <tr><th>内存</th><td>最低 4 GB，建议 8 GB</td></tr>
+      <tr><th>硬盘</th><td>约 300 MB（含存档与日志）</td></tr>
+      <tr><th>下载体积</th><td><b>39.06 MB</b>（zip）</td></tr>
+      <tr><th>存档位置</th><td><code>%USERPROFILE%\AppData\LocalLow\王鼎文\GUNBOND\</code></td></tr>
+      <tr><th>重置进度</th><td>运行包内 <code>重置存档.bat</code></td></tr>
+    </table>
+  </div>
+</section>
+
+<section id="download">
+  <div class="wrap">
+    <h2><small>DOWNLOAD</small>下载试玩版</h2>
+    <div class="dl">
+      <h3>GUNBOND 试玩版 v0.2gh</h3>
+      <p>Windows 64 位 · 39.06 MB · 免安装 · 解压即玩</p>
+      <div class="cta">
+        <a class="btn btn-main" id="dl-main"
+           href="https://github.com/wangdingwen163/gunbond-trial/releases/tag/v0.2gh"
+           target="_blank" rel="noopener">前往下载页</a>
+        <a class="btn btn-ghost" href="https://github.com/wangdingwen163/gunbond-trial/releases/tag/v0.2gh" target="_blank" rel="noopener">查看更新说明</a>
+      </div>
+      <p style="margin-top:16px;font-size:13.5px;color:#8f84a4">
+        若下载页打不开（部分地区访问 GitHub 不稳定），请改用备用地址；反馈里说明情况即可。
+      </p>
+      <div class="hash">
+        文件名　GUNBOND_Trial_v0.2gh_20261121.zip<br>
+        大小　　40,959,213 B（39.06 MB）<br>
+        MD5　　　<b>461F3AFAB5D774D3BF4D6EEFD584F1B1</b><br>
+        SHA256　 <b>6794564CC08EDF7267A4038805ED968C28FF9BDE2624B1923936B22B4A86CC93</b>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="flinks">
+      <a href="https://wangdingwen163.github.io/gunbond-legal/" target="_blank" rel="noopener">隐私政策</a>
+      <a href="https://github.com/wangdingwen163/gunbond-trial/issues" target="_blank" rel="noopener">反馈 / 报告问题</a>
+      <a href="https://github.com/wangdingwen163/gunbond-trial/releases" target="_blank" rel="noopener">全部版本</a>
+      <a href="mailto:liyajuan888@qq.com">liyajuan888@qq.com</a>
+    </div>
+    <p>GUNBOND · 试玩版 v0.2gh · Ironbond Studio</p>
+    <p class="disclaimer">
+      本页面提供的是早期试玩构建，美术素材仍在替换中，部分音效与特效为临时版本。
+      试玩包按包内 EULA 授权，仅限个人试玩，禁止再分发或商用。
+      本页不含追踪脚本、不收集任何个人信息。
+    </p>
+  </div>
+</footer>
+
+<dialog id="lb"><button class="x" aria-label="关闭">×</button><img alt="放大截图"></dialog>
+
+<script>
+(function(){
+  var lb = document.getElementById('lb');
+  var big = lb.querySelector('img');
+  document.querySelectorAll('.shots figure').forEach(function(f){
+    f.addEventListener('click', function(){
+      big.src = f.dataset.full;
+      if (typeof lb.showModal === 'function') lb.showModal();
+      else { window.open(f.dataset.full, '_blank'); }
+    });
+  });
+  lb.querySelector('.x').addEventListener('click', function(){ lb.close(); });
+  lb.addEventListener('click', function(e){ if (e.target === lb) lb.close(); });
+})();
+</script>
+</body>
+</html>
