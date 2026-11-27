@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://wangdingwen163.github.io/gunbond-trial/sitemap.xml
