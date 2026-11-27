@@ -264,11 +264,30 @@
   .dl h3{font-size:clamp(22px,2.6vw,30px);font-weight:900;letter-spacing:-.01em}
   .dl .line2{margin-top:8px;color:var(--mute);font-size:14.5px}
   .dl .cta{margin-top:26px}
-  .dl-side{text-align:center}
+  .dl-side{text-align:center;perspective:1200px}
+  .coverwrap{
+    display:inline-block;position:relative;
+    transform:rotateY(-17deg) rotateX(2deg);transform-style:preserve-3d;
+    filter:drop-shadow(0 30px 42px rgba(0,0,0,.68)) drop-shadow(0 6px 10px rgba(0,0,0,.45));
+    transition:transform .5s ease;
+  }
+  .coverwrap:hover{transform:rotateY(-4deg) rotateX(0)}
+  /* 书脊：贴左边缘 9px，只做厚度感，不盖住画面主体 */
+  .coverwrap::before{
+    content:"";position:absolute;left:0;top:3px;bottom:3px;width:13px;z-index:2;
+    border-radius:8px 0 0 8px;
+    background:linear-gradient(90deg,rgba(0,0,0,.92),rgba(0,0,0,.55) 46%,rgba(0,0,0,.18) 82%,rgba(255,255,255,.16));
+    box-shadow:inset -1px 0 0 rgba(255,255,255,.18),1px 0 0 rgba(0,0,0,.6);
+  }
+  /* 表面斜向高光 */
+  .coverwrap::after{
+    content:"";position:absolute;inset:0;z-index:1;border-radius:8px;pointer-events:none;
+    background:linear-gradient(118deg,rgba(255,255,255,.20) 0%,rgba(255,255,255,.05) 24%,transparent 44%);
+  }
   .dl-side .cover{
-    display:block;margin:0 auto;width:300px;height:auto;max-width:100%;
-    border-radius:10px;border:1px solid rgba(255,255,255,.14);
-    box-shadow:0 22px 50px rgba(0,0,0,.55);
+    display:block;width:300px;height:auto;max-width:100%;
+    border-radius:8px;border:1px solid rgba(255,255,255,.18);
+    box-shadow:0 1px 0 rgba(255,255,255,.10) inset;
   }
   .dl-side .cap{margin-top:14px;font-size:12.5px;color:var(--mute);letter-spacing:.04em}
   .dl-side .cap b{color:var(--gold)}
@@ -513,7 +532,9 @@
         </div>
       </div>
       <div class="dl-side">
-        <img class="cover" src="assets/cover.jpg" alt="GUNBOND 封面" width="600" height="900">
+        <div class="coverwrap">
+          <img class="cover" src="assets/cover.jpg" alt="GUNBOND 封面" width="600" height="900">
+        </div>
         <p class="cap">Windows 64 位 · <b>39.09 MB</b> · 免安装</p>
       </div>
     </div>
