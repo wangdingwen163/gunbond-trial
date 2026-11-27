@@ -264,11 +264,10 @@
   .dl h3{font-size:clamp(22px,2.6vw,30px);font-weight:900;letter-spacing:-.01em}
   .dl .line2{margin-top:8px;color:var(--mute);font-size:14.5px}
   .dl .cta{margin-top:26px}
-  .dl-side{text-align:center;perspective:1200px}
+  .dl-side{text-align:center;perspective:1400px}
   .coverwrap{
     display:inline-block;position:relative;
-    transform:rotateY(-17deg) rotateX(2deg);transform-style:preserve-3d;
-    filter:drop-shadow(0 30px 42px rgba(0,0,0,.68)) drop-shadow(0 6px 10px rgba(0,0,0,.45));
+    transform:rotateY(-14deg) rotateX(1.5deg);
     transition:transform .5s ease;
   }
   .coverwrap:hover{transform:rotateY(-4deg) rotateX(0)}
@@ -286,8 +285,11 @@
   }
   .dl-side .cover{
     display:block;width:300px;height:auto;max-width:100%;
-    border-radius:8px;border:1px solid rgba(255,255,255,.18);
-    box-shadow:0 1px 0 rgba(255,255,255,.10) inset;
+    border-radius:8px;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.16),
+      0 26px 44px rgba(0,0,0,.66),
+      0 6px 12px rgba(0,0,0,.5);
   }
   .dl-side .cap{margin-top:14px;font-size:12.5px;color:var(--mute);letter-spacing:.04em}
   .dl-side .cap b{color:var(--gold)}
@@ -533,7 +535,9 @@
       </div>
       <div class="dl-side">
         <div class="coverwrap">
-          <img class="cover" src="assets/cover.jpg" alt="GUNBOND 封面" width="600" height="900">
+          <img class="cover" src="assets/cover.jpg"
+               srcset="assets/cover.jpg 600w, assets/cover@2x.jpg 1200w" sizes="300px"
+               width="600" height="900" alt="GUNBOND 封面" decoding="async">
         </div>
         <p class="cap">Windows 64 位 · <b>39.09 MB</b> · 免安装</p>
       </div>
