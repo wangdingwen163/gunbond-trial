@@ -82,6 +82,13 @@
     background:#0a0d13 url("assets/hero-bg.jpg") center 40%/cover no-repeat;
     filter:saturate(1.08) brightness(1.14) contrast(1.03);
   }
+  .hero-video{
+    position:absolute;inset:0;z-index:-2;width:100%;height:100%;
+    object-fit:cover;object-position:center 45%;
+    opacity:0;transition:opacity .9s ease;
+    filter:saturate(1.08) brightness(1.10) contrast(1.03);
+  }
+  .hero-video.on{opacity:1}
   .hero::before{
     content:"";position:absolute;inset:0;z-index:-1;
     background:
@@ -101,17 +108,21 @@
     margin:18px 0 0;
   }
   .hero h1 em{font-style:normal;color:var(--gold)}
+  .hero .kicker{
+    margin-top:16px;font-size:14.5px;letter-spacing:.06em;color:var(--mute);font-weight:600;
+  }
+  .hero .kicker b{color:var(--gold);font-weight:800}
   .hero .sub{
     margin-top:22px;font-size:clamp(16px,1.6vw,20px);color:#c6cbd8;max-width:600px;line-height:1.75;
   }
   .hero .sub b{color:#fff;font-weight:700}
   .badge{
     display:inline-flex;align-items:center;gap:9px;font-size:12.5px;letter-spacing:.08em;
-    color:var(--gold);border:1px solid rgba(250,204,107,.32);background:rgba(250,204,107,.07);
+    color:#c6cbd8;border:1px solid rgba(255,255,255,.20);background:rgba(255,255,255,.045);
     padding:6px 14px;border-radius:99px;font-weight:700;
   }
-  .badge i{width:6px;height:6px;border-radius:50%;background:var(--gold);display:block;
-    box-shadow:0 0 0 4px rgba(250,204,107,.16)}
+  .badge i{width:6px;height:6px;border-radius:50%;background:#9aa3b5;display:block;
+    box-shadow:0 0 0 4px rgba(255,255,255,.10)}
   .cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
   .btn{
     display:inline-flex;align-items:center;gap:10px;padding:16px 30px;border-radius:99px;
@@ -168,6 +179,25 @@
   }
   .lead{color:var(--mute);margin-top:16px;font-size:16.5px;max-width:640px}
 
+  /* ---------------- 融合带（机制前置） ---------------- */
+  .fusion-band{
+    padding:clamp(44px,5.5vw,76px) 0;
+    background:linear-gradient(180deg,rgba(139,108,255,.06),rgba(139,108,255,0) 78%);
+  }
+  .fb-inner{display:grid;grid-template-columns:1fr auto;gap:44px;align-items:center}
+  .fb-inner h2{font-size:clamp(23px,2.5vw,33px);margin-top:10px;letter-spacing:-.01em}
+  .fb-inner .lead{margin-top:12px;max-width:560px;font-size:15.5px}
+  .fb-inner .lead b{color:var(--ink)}
+  .fusion-band .formula{
+    margin:0;padding:18px 22px;border-radius:16px;
+    background:rgba(139,108,255,.08);border:1px solid rgba(139,108,255,.30);
+    box-shadow:0 14px 40px rgba(0,0,0,.35);
+  }
+  @media(max-width:900px){
+    .fb-inner{grid-template-columns:1fr;gap:22px}
+    .fusion-band .formula{justify-content:center}
+  }
+
   /* ---------------- 截图画廊：横向带 ---------------- */
   #shots{padding-bottom:clamp(56px,7vw,88px)}
   .gallery{
@@ -191,8 +221,13 @@
   }
 
   /* ---------------- 特性：非对称 ---------------- */
-  .feat{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-top:44px}
-  .feat .col{display:grid;gap:18px}
+  .feat{display:grid;grid-template-columns:repeat(6,1fr);gap:18px;margin-top:44px}
+  .feat .card{grid-column:span 2}
+  .feat .card.hero-card{grid-column:1 / -1}
+  @media(max-width:820px){
+    .feat{grid-template-columns:1fr}
+    .feat .card,.feat .card.hero-card{grid-column:auto}
+  }
   .card{
     background:var(--panel);border:1px solid var(--line);border-radius:var(--r);
     padding:30px 28px;transition:.22s;position:relative;overflow:hidden;
@@ -208,7 +243,8 @@
     background:linear-gradient(155deg,rgba(250,204,107,.10),rgba(139,108,255,.08) 60%,var(--panel) 100%);
     border-color:rgba(250,204,107,.28);
   }
-  .card.hero-card h3{font-size:24px}
+  .card.hero-card h3{font-size:26px}
+  .card.hero-card p{max-width:720px}
   .formula{
     display:flex;align-items:center;gap:10px;flex-wrap:wrap;
     margin-top:18px;padding:13px 15px;border-radius:12px;
@@ -221,7 +257,6 @@
   .f-mat{color:#ffb3a0;border-color:rgba(255,120,90,.35)}
   .f-out{color:var(--gold);border-color:rgba(250,204,107,.42)}
   .f-op{color:var(--gold);opacity:.85;font-weight:900;font-size:17px}
-  @media(max-width:820px){.feat{grid-template-columns:1fr}}
 
   /* ---------------- 反色区块（借 play.date 手法）---------------- */
   .paper{
@@ -368,7 +403,7 @@
 
 <header id="hdr">
   <div class="wrap bar">
-    <a class="brand" href="#" aria-label="GUNBOND 首页"><img src="assets/logo.png" alt="GUNBOND" width="303" height="52"></a>
+    <a class="brand" href="#" aria-label="GUNBOND 首页"><img src="assets/logo-white.png" alt="GUNBOND" width="303" height="52"></a>
     <nav>
       <a href="#shots">画面</a>
       <a href="#features">特色</a>
@@ -381,12 +416,17 @@
 
 <div class="hero">
   <div class="hero-bg"></div>
+  <video class="hero-video" id="herovid" autoplay muted loop playsinline preload="metadata"
+         poster="assets/hero-poster.jpg" aria-hidden="true" tabindex="-1">
+    <source src="assets/hero-loop.webm" type="video/webm">
+    <source src="assets/hero-loop.mp4" type="video/mp4">
+  </video>
   <div class="wrap">
     <div class="hero-inner">
       <span class="badge"><i></i>Windows 试玩版 · 免安装 · 中英双语</span>
       <h1>捡枪，融合，<br><em>越滚越强。</em></h1>
+      <p class="kicker">俯视角射击 × 枪械融合 Roguelite · 单局 10–20 分钟</p>
       <p class="sub">
-        <b>GUNBOND</b> 是一款俯视角射击 + 枪械融合 Roguelite。
         <b>5 层</b>、每层 3 波，边打边捡，两把枪合成一把新的——
         打完 15 波，你会得到一套只属于这一局的武器组合。
       </p>
@@ -413,6 +453,25 @@
     <div class="stat"><b>20</b><span>条成就</span></div>
   </div>
 </div>
+
+<section id="fusion" class="fusion-band">
+  <div class="wrap">
+    <div class="fb-inner">
+      <div>
+        <span class="eyebrow">Core mechanic</span>
+        <h2>一枪一材料，长出新打法</h2>
+        <p class="lead">5 把基础枪 × 6 种材料 = <b>30 条融合路线</b>。不是数值叠加，而是<b>射击方式改变</b>：散射、连发、穿透、追踪各有分支。</p>
+      </div>
+      <div class="formula" role="img" aria-label="融合示例：突击步枪加燃烧材料得到火焰弹幕">
+        <span class="f-item">突击步枪</span>
+        <span class="f-op">＋</span>
+        <span class="f-item f-mat">燃烧材料</span>
+        <span class="f-op">→</span>
+        <span class="f-item f-out">火焰弹幕</span>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section id="shots">
   <div class="wrap">
@@ -445,36 +504,25 @@
       <p class="lead">不是靠数值堆砌，而是靠“这一局长成什么样”的变化。</p>
     </div>
     <div class="feat">
-      <div class="col">
-        <div class="card hero-card">
-          <span class="num">01</span>
-          <h3>枪械融合</h3>
-          <p>两把枪合成一把新的——不是数值叠加，而是<b>射击方式改变</b>：散射、连发、穿透、追踪各有分支。融合图鉴共 <b>30 条</b>，集齐本身就是目标。</p>
-          <div class="formula" role="img" aria-label="融合示例：突击步枪 加 燃烧材料 得到 火焰弹幕">
-            <span class="f-item">突击步枪</span>
-            <span class="f-op">＋</span>
-            <span class="f-item f-mat">燃烧材料</span>
-            <span class="f-op">→</span>
-            <span class="f-item f-out">火焰弹幕</span>
-          </div>
-        </div>
-        <div class="card">
-          <span class="num">02</span>
-          <h3>波次推进</h3>
-          <p>共 <b>5 层</b>，每层 <b>3 波</b>（2 波普通 + 1 波守卫长）。守卫长有硬限时，超时它会逃脱并罚你材料，不给你无限风筝的余地。</p>
-        </div>
+      <div class="card hero-card">
+        <span class="num">01</span>
+        <h3>枪械融合</h3>
+        <p>两把枪合成一把新的——不是数值叠加，而是<b>射击方式改变</b>：散射、连发、穿透、追踪各有分支。融合图鉴共 <b>30 条</b>，集齐本身就是目标。</p>
       </div>
-      <div class="col">
-        <div class="card">
-          <span class="num">03</span>
-          <h3>构筑成长</h3>
-          <p>升级三选一 + <b>残响</b>货币，同一把枪在不同局里会走出完全不同的强度曲线。</p>
-        </div>
-        <div class="card">
-          <span class="num">04</span>
-          <h3>图鉴与解锁</h3>
-          <p>敌人、材料、战绩三页图鉴，加上融合图鉴 <b>30/30</b>、军械库 <b>7 个节点</b>。进度全部持久化，越玩解锁越多。</p>
-        </div>
+      <div class="card">
+        <span class="num">02</span>
+        <h3>波次推进</h3>
+        <p>共 <b>5 层</b>，每层 <b>3 波</b>（2 波普通 + 1 波守卫长）。守卫长有硬限时，超时它会逃脱并罚你材料，不给你无限风筝的余地。</p>
+      </div>
+      <div class="card">
+        <span class="num">03</span>
+        <h3>构筑成长</h3>
+        <p>升级三选一 + <b>残响</b>货币，同一把枪在不同局里会走出完全不同的强度曲线。</p>
+      </div>
+      <div class="card">
+        <span class="num">04</span>
+        <h3>图鉴与解锁</h3>
+        <p>敌人、材料、战绩三页图鉴，加上融合图鉴 <b>30/30</b>、军械库 <b>7 个节点</b>。进度全部持久化，越玩解锁越多。</p>
       </div>
     </div>
   </div>
@@ -633,6 +681,22 @@
     if (e.key === 'ArrowLeft')  { paint(cur - 1); e.preventDefault(); }
     if (e.key === 'ArrowRight') { paint(cur + 1); e.preventDefault(); }
   });
+
+  // ---- 首屏循环视频：尊重「减少动态效果」与省流量 ----
+  var vid = document.getElementById('herovid');
+  if (vid) {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var saveData = navigator.connection && navigator.connection.saveData;
+    if (reduce || saveData) {
+      vid.removeAttribute('autoplay');
+      vid.pause();
+      vid.style.display = 'none';   // 退回静态 hero-bg
+    } else {
+      vid.addEventListener('playing', function(){ vid.classList.add('on'); });
+      var p = vid.play();
+      if (p && p.catch) p.catch(function(){ /* 自动播放被拦就保持静态图 */ });
+    }
+  }
 
   // ---- 顶栏导航高亮（当前区块） ----
   var links = Array.prototype.slice.call(document.querySelectorAll('.bar nav a'));
