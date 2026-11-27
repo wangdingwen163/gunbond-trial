@@ -129,11 +129,20 @@
 
   /* ---------------- 数据条 ---------------- */
   .stats{
-    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
     background:linear-gradient(180deg,rgba(250,204,107,.045),transparent);
   }
   .stats-grid{
     display:grid;grid-template-columns:repeat(5,1fr);
+    position:relative;
+  }
+  /* 上下横线只画在内容宽度内（左右各让出 40px 内边距），不拉满屏 */
+  .stats-grid::before,.stats-grid::after{
+    content:"";position:absolute;left:40px;right:40px;height:1px;background:var(--line);
+  }
+  .stats-grid::before{top:0}
+  .stats-grid::after{bottom:0}
+  @media(max-width:760px){
+    .stats-grid::before,.stats-grid::after{left:20px;right:20px}
   }
   .stat{padding:30px 10px;text-align:center;border-left:1px solid var(--line)}
   .stat:first-child{border-left:none}
@@ -163,7 +172,7 @@
   #shots{padding-bottom:clamp(56px,7vw,88px)}
   .gallery{
     display:grid;gap:16px;margin-top:40px;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(2,1fr);
   }
   .shot{
     position:relative;aspect-ratio:16/9;border-radius:var(--r);overflow:hidden;
@@ -176,7 +185,6 @@
     background:linear-gradient(transparent,rgba(6,8,12,.92));color:#e9e4d8;font-weight:600;
   }
   .gallery-hint{margin-top:16px;font-size:12.5px;color:var(--dim);letter-spacing:.04em}
-  @media(max-width:1179px){.gallery{grid-template-columns:repeat(2,1fr)}}
   @media(max-width:640px){
     .gallery{grid-template-columns:1fr;gap:12px}
     .shot figcaption{font-size:12.5px;padding:30px 14px 10px}
@@ -256,14 +264,12 @@
   .dl h3{font-size:clamp(22px,2.6vw,30px);font-weight:900;letter-spacing:-.01em}
   .dl .line2{margin-top:8px;color:var(--mute);font-size:14.5px}
   .dl .cta{margin-top:26px}
-  .dl-side{text-align:center;perspective:900px}
+  .dl-side{text-align:center}
   .dl-side .cover{
-    display:block;margin:0 auto;width:260px;max-width:100%;aspect-ratio:2/3;
-    object-fit:cover;border-radius:12px;border:1px solid rgba(255,255,255,.15);
-    box-shadow:0 26px 60px rgba(0,0,0,.62),0 1px 0 rgba(255,255,255,.10) inset;
-    transform:rotateY(-8deg) rotateX(2deg);transition:transform .45s ease;
+    display:block;margin:0 auto;width:300px;height:auto;max-width:100%;
+    border-radius:10px;border:1px solid rgba(255,255,255,.14);
+    box-shadow:0 22px 50px rgba(0,0,0,.55);
   }
-  .dl-side .cover:hover{transform:rotateY(-2deg) rotateX(0)}
   .dl-side .cap{margin-top:14px;font-size:12.5px;color:var(--mute);letter-spacing:.04em}
   .dl-side .cap b{color:var(--gold)}
   .hash{
@@ -392,7 +398,7 @@
     <div class="sec-head">
       <span class="eyebrow">Screenshots</span>
       <h2>实机画面</h2>
-      <p class="lead">6 张实机 + 融合面板 + 升级三选一，全部为游戏内截图，未做后期合成。</p>
+      <p class="lead">8 张游戏内实机截图（含融合面板与升级三选一），未做后期合成。</p>
     </div>
   </div>
   <div class="wrap">
